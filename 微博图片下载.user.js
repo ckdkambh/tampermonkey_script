@@ -15,12 +15,18 @@
 (function(){
     jQuery(document).ready(function() {
         var setList1 = $('.gn_set');
-        setList1.append('<div class="gn_set_list"><button id="getImgBtn">获取图片</button><div>')
-        
-        var setList2 = $('#pl_common_top');
-        setList2.append('<div class="gn_set_list"><textarea id="mycontainer" rows="2" cols="40"></textarea><div>')
+        setList1.append('<div class="gn_set_list"><button id="getElementBtn">开始分析</button><div>')
 
-        $('#getImgBtn').click(function(){
+        var setList2 = $('.gn_header.clearfix');
+        htmlToInsert = 
+            '<div class="gn_set_list" align="center" style="width:2500px">'+
+            '<textarea id="mycontainer" rows="2" cols="10"></textarea>'+
+            '<label><input type="radio" name="fetch_mode" value="1" checked>图片</label>'+
+            '<label><input type="radio" name="fetch_mode" value="2">视频</label>'+   
+        '</div>';
+        setList2.append(htmlToInsert);
+
+        var imgSearch = function(){
             var imgList = $('img');
             var linkList = new Array();
             for(var i = 0; i < imgList.length; i++){
@@ -37,6 +43,29 @@
                     return '';
                 }
             });
+            return linkList;
+        };
+
+        var videoSearch = function(){
+            var videoList = $('video');
+            var linkList = new Array();
+            for(var i = 0; i < videoList.length; i++){
+                linkList.push(videoList[i].getAttribute('src'));
+            }
+            console.log(linkList);
+            linkList = linkList.filter(function(x){
+                return x != null && x != "";
+            });
+            return linkList;
+        };
+
+        $('#getElementBtn').click(function(){
+            let val=$('input:radio[name="fetch_mode"]:checked').val();
+            if (val == 1){
+                linkList = imgSearch();
+            }else{
+                linkList = videoSearch();
+            }
             document.getElementById('mycontainer').value='';
             for(var i = 0; i < linkList.length; i++){
                 document.getElementById('mycontainer').value = document.getElementById('mycontainer').value + linkList[i]+'\n';
