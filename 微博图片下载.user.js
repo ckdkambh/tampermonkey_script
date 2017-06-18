@@ -6,25 +6,26 @@
 // @author       You
 // @match        http://weibo.com/*
 // @match        http://www.weibo.com/*
-// @grant        none  
+// @grant        GM_setClipboard  
 // @require    http://code.jquery.com/jquery-1.11.0.min.js  
-// @require    http://www.dayanmei.com/js/zeroclipboard/ZeroClipboard.min.js
 // ==/UserScript==
 /* jshint -W097 */
 'use strict';
+/*
+左上角是选项，单击选择执行另外的选项，双击执行当前的选项
+输出到剪切板
+*/
+var videoLinkSet = new Set(); 
 (function(){
     jQuery(document).ready(function() {
         var setList1 = $('.gn_set');
-        setList1.append('<div class="gn_set_list"><button id="getElementBtn">开始分析</button><div>')
-
-        var setList2 = $('.gn_header.clearfix');
-        htmlToInsert = 
-            '<div class="gn_set_list" align="center" style="width:2500px">'+
-            '<textarea id="mycontainer" rows="2" cols="10"></textarea>'+
-            '<label><input type="radio" name="fetch_mode" value="1" checked>图片</label>'+
-            '<label><input type="radio" name="fetch_mode" value="2">视频</label>'+   
-        '</div>';
-        setList2.append(htmlToInsert);
+        setList1.append('<div class="gn_set_list">'+
+                        '<select id="mode_choose">'+
+                        '<option name="mode_choose" value="none" checked>请选择</option>'+
+                        '<option name="mode_choose" value="img">图片</option>'+
+                        '<option name="mode_choose" value="video">视频</option>'+
+                        '</select>'+
+                        '</div>');
 
         var imgSearch = function(){
             var imgList = $('img');
@@ -52,28 +53,45 @@
             for(var i = 0; i < videoList.length; i++){
                 linkList.push(videoList[i].getAttribute('src'));
             }
-            console.log(linkList);
             linkList = linkList.filter(function(x){
                 return x != null && x != "";
             });
             return linkList;
         };
 
-        $('#getElementBtn').click(function(){
-            let val=$('input:radio[name="fetch_mode"]:checked').val();
-            if (val == 1){
+        var processStart = function(){
+            var val=$('#mode_choose').val();
+            if (val == 'img'){
                 linkList = imgSearch();
-            }else{
-                linkList = videoSearch();
+            }else if(val == 'video'){
+                linkList = videoLinkSet;
             }
-            document.getElementById('mycontainer').value='';
+            else{
+                return;
+            }
+            var linkString='';
+            var linkCount = 0;
+            for(var i of linkList){
+                linkString = linkString + i +'\r\n ';
+                linkCount++;
+            }
+            GM_setClipboard(linkString);
+            alert('已经复制'+linkCount+'条连接进入剪切板');
+        };
+
+        $('#mode_choose').change(processStart);
+
+        $('#mode_choose').dblclick(processStart);
+
+        $(document).scroll(function(){
+            linkList = videoSearch();
             for(var i = 0; i < linkList.length; i++){
-                document.getElementById('mycontainer').value = document.getElementById('mycontainer').value + linkList[i]+'\n';
+                var oldSize = videoLinkSet.size;
+                videoLinkSet.add(linkList[i]);
+                if (oldSize != videoLinkSet.size){
+                    console.log('发现新链接'+linkList[i]);
+                }
             }
-            alert('已经选中'+linkList.length+'条连接，按Ctrl+V复制连接');
-            document.getElementById('mycontainer').focus();
-            document.getElementById('mycontainer').select();
-            console.log(document.getElementById('mycontainer').value);
         });
 
     });
