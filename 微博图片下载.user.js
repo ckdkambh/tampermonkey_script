@@ -7,6 +7,7 @@
 // @match        http://weibo.com/*
 // @match        http://www.weibo.com/*
 // @grant        GM_setClipboard  
+// @grant        GM_addStyle
 // @require    http://code.jquery.com/jquery-1.11.0.min.js  
 // ==/UserScript==
 /* jshint -W097 */
@@ -26,6 +27,12 @@ var videoLinkSet = new Set();
                         '<option name="mode_choose" value="video">视频</option>'+
                         '</select>'+
                         '</div>');
+
+        GM_addStyle('#TManays{z-index:999999; position:absolute; left:0px; top:50%; height:auto; border:0; margin:0;background-color:#ffff00;}'+
+                    '.TMbtn{position:fixed; opacity:0.6; height:50px; width:15px; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} '+
+                    '.TMbtn:hover{width:25px; opacity:1;} '+
+                    '.TMbtnLeft{opacity:0.6; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} '+
+                    '.TMbtnLeft:hover{width:25px; opacity:1;} ');
 
         var imgSearch = function(){
             var imgList = $('img');
@@ -94,6 +101,38 @@ var videoLinkSet = new Set();
             }
         });
 
+        $('body').append('<div id="TManays">'+
+                         ' <div id="closed_div" style="display:inline">'+
+                         '  <button id="open_btn_l" class="TMbtn" style="left:0;">></button>'+
+                         ' </div>'+
+                         ' <div id="opened_div" style="display:none">'+
+                         '  <div style="position:fixed; left:0;width:120px;height:50px;background-color:#ffff00;">'+
+                         '   <div style="width:100px;">'+
+                         '    <div style="margin:5px;">'+
+                         '     <label><input type="radio" name="mode_choose" value="1" checked>图片</label>'+
+                         '     <label><input type="radio" name="mode_choose" value="2">视频</label>'+    
+                         '    </div>'+
+                         '    <div style="margin:5px;">'+
+                         '     <p align="center">'+
+                         '       <button id="start_btn_l">开始</button>'+
+                         '     </p>'+
+                         '    </div>'+
+                         '   </div>'+
+                         '   <div style="position:absolute; right:0;top:0;width:20px;">'+
+                         '    <button id="close_btn_l" class="TMbtnLeft" style="width:20px;height:50px; border:0; margin:0;"><</button>'+
+                         '   </div>'+
+                         '  </div>'+
+                         ' </div>'+
+                         '</div>');
+        $('#open_btn_l').click(function(){
+            $('#closed_div')[0].style.display = "none";
+            $('#opened_div')[0].style.display = "inline";
+        });
+
+        $('#close_btn_l').click(function(){
+            $('#closed_div')[0].style.display = "inline";
+            $('#opened_div')[0].style.display = "none";
+        });
     });
 })();
 
