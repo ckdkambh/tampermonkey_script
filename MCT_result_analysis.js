@@ -15,7 +15,6 @@
         GM_addStyle('#TManays{z-index:999999; position:absolute; left:0px; top:0px; height:auto; border:0; margin:0;}'+
                     '.TMbtn{position:fixed; left:0; opacity:0.6; height:50px; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; background-color:#ffff00; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} ');
 
-        document.body.style.backgroundColor = 'lightblue';
         var div=document.createElement("div");
         div.innerHTML='<div id="TManays">'+
             '<button id="runAnalysis" class="TMbtn">run</button>'+
@@ -48,7 +47,7 @@
                             firstKind = 'NC';
                             secondKind = (txtInLines[i].split("\'"))[1];
                             break;
-                        }else if (txtInLines[i].indexOf("RRC") != -1){
+                        }else if (txtInLines[i].indexOf("RRC-") != -1){
                             firstKind = 'RRC';
                         }else if (txtInLines[i].indexOf("X2AP") != -1){
                             firstKind = 'X2AP';
@@ -84,12 +83,11 @@
             }
         };
 
-        funAnalysis();
-
         $('#runAnalysis').click(function(){
-            console.log('1111');
+            document.body.style.backgroundColor = 'lightblue';
+            funAnalysis();
         });
-        
+
         $('.title_l').click(function(){
             var bodyElem = this.getElementsByClassName("body_l");
             if (bodyElem[0].style.display == 'none')
@@ -97,8 +95,8 @@
             else
                 bodyElem[0].style.display = 'none';
         });
-        
-        
+
+
     });
     // Your code here...
 })();
