@@ -24,48 +24,49 @@
         var protocolAnalysis = function(bodyString){
             try{
                 var txtInLines = bodyString.split("\n");
+                var title = (txtInLines[1].split("\""))[1];
+                var firstKind, secondKind, j = 0;
+                for (var i = 2; i < txtInLines.length; i++){
+                    txtInLines[i] = txtInLines[i].trim();
+                    if (txtInLines[i].indexOf("#") === 0){
+                        j++;
+                        if (j == 1){
+                            if (txtInLines[i].indexOf("nas") != -1){
+                                firstKind = 'NAS';
+                                secondKind = (txtInLines[i].split("{"))[0].substring(1);
+                                break;
+                            }else if (txtInLines[i].indexOf("BBMC_") != -1){
+                                firstKind = 'BBMC';
+                                secondKind = (txtInLines[i].split("\'"))[1];
+                                break;
+                            }else if (txtInLines[i].indexOf("NC_") != -1){
+                                firstKind = 'NC';
+                                secondKind = (txtInLines[i].split("\'"))[1];
+                                break;
+                            }else if (txtInLines[i].indexOf("RRC-") != -1){
+                                firstKind = 'RRC';
+                            }else if (txtInLines[i].indexOf("X2AP") != -1){
+                                firstKind = 'X2AP';
+                            }else if (txtInLines[i].indexOf("S1AP") != -1){
+                                firstKind = 'S1AP';
+                            }else{
+                                firstKind = '';
+                                secondKind = (txtInLines[i].split("\'"))[1];
+                                break;
+                            }
+                        }else{
+                            secondKind = (txtInLines[i].split("\'"))[1];
+                            break;
+                        }
+                    }
+                }
+                title = firstKind+":"+secondKind+"||"+title;
+                return title;
             }
             catch (err){
                 return '';
             }
-            var title = (txtInLines[1].split("\""))[1];
-            var firstKind, secondKind, j = 0;
-            for (var i = 2; i < txtInLines.length; i++){
-                txtInLines[i] = txtInLines[i].trim();
-                if (txtInLines[i].indexOf("#") == 0){
-                    j++;
-                    if (j == 1){
-                        if (txtInLines[i].indexOf("nas") != -1){
-                            firstKind = 'NAS';
-                            secondKind = (txtInLines[i].split("{"))[0].substring(1);
-                            break;
-                        }else if (txtInLines[i].indexOf("BBMC_") != -1){
-                            firstKind = 'BBMC';
-                            secondKind = (txtInLines[i].split("\'"))[1];
-                            break;
-                        }else if (txtInLines[i].indexOf("NC_") != -1){
-                            firstKind = 'NC';
-                            secondKind = (txtInLines[i].split("\'"))[1];
-                            break;
-                        }else if (txtInLines[i].indexOf("RRC-") != -1){
-                            firstKind = 'RRC';
-                        }else if (txtInLines[i].indexOf("X2AP") != -1){
-                            firstKind = 'X2AP';
-                        }else if (txtInLines[i].indexOf("S1AP") != -1){
-                            firstKind = 'S1AP';
-                        }else{
-                            firstKind = '';
-                            secondKind = (txtInLines[i].split("\'"))[1];
-                            break;
-                        }
-                    }else{
-                        secondKind = (txtInLines[i].split("\'"))[1];
-                        break;
-                    }
-                }
-            }
-            title = firstKind+":"+secondKind+"||"+title;
-            return title;
+
 
         };
 
@@ -77,24 +78,25 @@
                 divList[i].innerHTML = '<div class="default title_l">'+
                     title+
                     '<div class="default body_l" style="display:none;">'+
-                    oldHtml+      
+                    oldHtml+
                     '</div>'+
-                    '</div>';  
+                    '</div>';
             }
         };
 
         $('#runAnalysis').click(function(){
             document.body.style.backgroundColor = 'lightblue';
             funAnalysis();
-        });
-
-        $('.title_l').click(function(){
+            $('.title_l').click(function(){
             var bodyElem = this.getElementsByClassName("body_l");
             if (bodyElem[0].style.display == 'none')
                 bodyElem[0].style.display = 'block';
             else
                 bodyElem[0].style.display = 'none';
         });
+        });
+
+
 
 
     });
