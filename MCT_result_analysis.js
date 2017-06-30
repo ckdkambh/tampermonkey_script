@@ -21,6 +21,14 @@
             '</div>';
         document.body.appendChild(div);
 
+        var padString = function(oldString, tarLength){
+            if (oldString.length >= tarLength){
+                return oldString;
+            }
+            var padStr = new Array(tarLength-oldString.length).join(" ");
+            return oldString+padStr;
+        };
+
         var protocolAnalysis = function(bodyString){
             try{
                 var txtInLines = bodyString.split("\n");
@@ -60,11 +68,11 @@
                         }
                     }
                 }
-                title = firstKind+":"+secondKind+"||"+title;
+                title = padString(firstKind,20)+":"+padString(secondKind,50)+"||"+padString(title,60);
                 return title;
             }
             catch (err){
-                return '';
+                return '!@#';
             }
 
 
@@ -75,10 +83,14 @@
             for (var i = 1; i < divList.length; i++){
                 var oldHtml = divList[i].innerHTML;
                 var title = protocolAnalysis(divList[i].innerHTML);
-                divList[i].innerHTML = '<div class="default title_l">'+
+                divList[i].innerHTML =
+                    '<div class="combine_l">'+
+                    '<div class="default title_l">'+
                     title+
-                    '<div class="default body_l" style="display:none;">'+
+                    '</div>'+
+                    '<div class="default body_l" style="display:none;border:3px solid #0ff;">'+
                     oldHtml+
+                    '</div>'+
                     '</div>'+
                     '</div>';
             }
@@ -88,14 +100,13 @@
             document.body.style.backgroundColor = 'lightblue';
             funAnalysis();
             $('.title_l').click(function(){
-            var bodyElem = this.getElementsByClassName("body_l");
-            if (bodyElem[0].style.display == 'none')
-                bodyElem[0].style.display = 'block';
-            else
-                bodyElem[0].style.display = 'none';
+                var bodyElem = $(this).parent(".combine_l").children(".body_l");
+                if (bodyElem[0].style.display == 'none')
+                    bodyElem[0].style.display = 'block';
+                else
+                    bodyElem[0].style.display = 'none';
+            });
         });
-        });
-
 
 
 
