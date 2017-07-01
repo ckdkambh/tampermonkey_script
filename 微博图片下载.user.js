@@ -19,15 +19,6 @@
 var videoLinkSet = new Set(); 
 (function(){
     jQuery(document).ready(function() {
-        var setList1 = $('.gn_set');
-        setList1.append('<div class="gn_set_list">'+
-                        '<select id="mode_choose">'+
-                        '<option name="mode_choose" value="none" checked>请选择</option>'+
-                        '<option name="mode_choose" value="img">图片</option>'+
-                        '<option name="mode_choose" value="video">视频</option>'+
-                        '</select>'+
-                        '</div>');
-
         GM_addStyle('#TManays{z-index:999999; position:absolute; left:0px; top:50%; height:auto; border:0; margin:0;background-color:#ffff00;}'+
                     '.TMbtn{position:fixed; opacity:0.6; height:50px; width:15px; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} '+
                     '.TMbtn:hover{width:25px; opacity:1;} '+
@@ -67,14 +58,11 @@ var videoLinkSet = new Set();
         };
 
         var processStart = function(){
-            var val=$('#mode_choose').val();
-            if (val == 'img'){
+            var val=$('input:radio[name="mode_choose_l"]:checked').val();
+            if (val == 1){
                 linkList = imgSearch();
-            }else if(val == 'video'){
+            }else{
                 linkList = videoLinkSet;
-            }
-            else{
-                return;
             }
             var linkString='';
             var linkCount = 0;
@@ -85,10 +73,6 @@ var videoLinkSet = new Set();
             GM_setClipboard(linkString);
             alert('已经复制'+linkCount+'条连接进入剪切板');
         };
-
-        $('#mode_choose').change(processStart);
-
-        $('#mode_choose').dblclick(processStart);
 
         $(document).scroll(function(){
             linkList = videoSearch();
@@ -109,8 +93,8 @@ var videoLinkSet = new Set();
                          '  <div style="position:fixed; left:0;width:120px;height:50px;background-color:#ffff00;">'+
                          '   <div style="width:100px;">'+
                          '    <div style="margin:5px;">'+
-                         '     <label><input type="radio" name="mode_choose" value="1" checked>图片</label>'+
-                         '     <label><input type="radio" name="mode_choose" value="2">视频</label>'+    
+                         '     <label><input type="radio" name="mode_choose_l" value="1" checked>图片</label>'+
+                         '     <label><input type="radio" name="mode_choose_l" value="2">视频</label>'+    
                          '    </div>'+
                          '    <div style="margin:5px;">'+
                          '     <p align="center">'+
@@ -133,6 +117,8 @@ var videoLinkSet = new Set();
             $('#closed_div')[0].style.display = "inline";
             $('#opened_div')[0].style.display = "none";
         });
+        $('#start_btn_l').click(processStart);
+        
     });
 })();
 
