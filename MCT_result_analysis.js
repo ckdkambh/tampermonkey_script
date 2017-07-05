@@ -24,18 +24,18 @@ var isIni = true;
                          '  <button id="open_btn_l" class="TMbtn" style="left:0;">></button>'+
                          ' </div>'+
                          ' <div id="opened_div" style="display:none">'+
-                         '  <div style="position:fixed; left:0;width:100px;height:50px;background-color:#ffff00;">'+
-                         '   <div style="width:80px;background-color:#ffff00;">'+
+                         '  <div style="position:fixed; left:0;width:120px;height:50px;background-color:#ffff00;">'+
+                         '   <div style="width:100px;background-color:#ffff00;">'+
                          '    <div style="margin:5px;">'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="S1AP" checked>S1AP</label>'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="X2AP" checked>X2AP</label>'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="RRC" checked>RRC</label>'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="BBMC" checked>BBMC</label>'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="NAS" checked>NAS</label>'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="S1AP">S1AP</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="X2AP">X2AP</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="RRC">RRC</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="BBMC">BBMC</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="NAS">NAS</label>'+
                          '    </div>'+
                          '    <div style="margin:5px;">'+
                          '     <p align="center">'+
-                         '       <button id="runAnalysis">开始过滤</button>'+
+                         '       <button id="runAnalysis">开始过滤</button><br />'+
                          '       <button id="clearChooseMode">清除筛选</button>'+
                          '     </p>'+
                          '    </div>'+
@@ -45,6 +45,9 @@ var isIni = true;
                          '   </div>'+
                          '  </div>'+
                          ' </div>'+
+                         '</div>');
+
+        $('body').append('<div id="filter_div" style="display:none;white-space:pre;margin:0 5 0 5;">'+
                          '</div>');
 
         var padString = function(oldString, tarLength){
@@ -131,6 +134,10 @@ var isIni = true;
             return false;
         };
 
+        var cleanFilterDiv = function(){
+            $('#filter_div').children().remove(".default");
+        };
+
         $('#runAnalysis').click(function(){
             if (isIni){
                 document.body.style.backgroundColor = 'lightblue';
@@ -145,19 +152,16 @@ var isIni = true;
                         bodyElem[0].style.display = 'none';
                 });
             }
+            cleanFilterDiv();
             var chechedList = $('input:checkbox[name="mode_choose_l"]:checked');
             var divList = $('.default');
             for (var i = 1; i < divList.length; i++){
                 var keyWord = ($(divList[i]).find(".title_l")[0].innerText.split(":"))[0];
                 if (isChoosed(chechedList, keyWord)){
-                    $(divList[i]).css('display','block');
-                    $(divList[i]).css('overflow','');
-                    $(divList[i]).css('height','');
-                }else{
-                    $(divList[i]).css('display','none');
-                    $(divList[i]).css('overflow','hidden');
-                    $(divList[i]).css('height','0');
+                    $(divList[i]).clone(true).css('margin', '5px').appendTo("#filter_div");
                 }
+                $('#filter_div').css('display','block');
+                $('pre').css('display','none');
             }
         });
 
@@ -175,12 +179,10 @@ var isIni = true;
                         bodyElem[0].style.display = 'none';
                 });
             }
+            cleanFilterDiv();
             var divList = $('.default');
-            for (var i = 1; i < divList.length; i++){
-                $(divList[i]).css('display','block');
-                $(divList[i]).css('overflow','');
-                $(divList[i]).css('height','');
-            }
+            $('#filter_div').css('display','none');
+            $('pre').css('display','block');
         });
 
         $('#open_btn_l').click(function(){
