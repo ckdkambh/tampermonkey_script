@@ -12,14 +12,39 @@
 (function() {
     'use strict';
     jQuery(document).ready(function() {
-        GM_addStyle('#TManays{z-index:999999; position:absolute; left:0px; top:0px; height:auto; border:0; margin:0;}'+
-                    '.TMbtn{position:fixed; left:0; opacity:0.6; height:50px; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; background-color:#ffff00; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} ');
+        GM_addStyle('#TManays{z-index:999999; position:absolute; left:0px; top:50%; height:auto; border:0; margin:0;background-color:#ffff00;}'+
+                    '.TMbtn{position:fixed; opacity:0.6; height:50px; width:15px; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} '+
+                    '.TMbtn:hover{width:25px; opacity:1;} '+
+                    '.TMbtnLeft{opacity:0.6; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} '+
+                    '.TMbtnLeft:hover{width:25px; opacity:1;} '+
+                    'defaultl { background:lightblue; color:black }');
 
-        var div=document.createElement("div");
-        div.innerHTML='<div id="TManays">'+
-            '<button id="runAnalysis" class="TMbtn">run</button>'+
-            '</div>';
-        document.body.appendChild(div);
+        $('body').append('<div id="TManays">'+
+                         ' <div id="closed_div" style="display:inline">'+
+                         '  <button id="open_btn_l" class="TMbtn" style="left:0;">></button>'+
+                         ' </div>'+
+                         ' <div id="opened_div" style="display:none">'+
+                         '  <div style="position:fixed; left:0;width:90px;height:50px;background-color:#ffff00;">'+
+                         '   <div style="width:70px;background-color:#ffff00;">'+
+                         '    <div style="margin:5px;">'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="S1AP" checked>S1AP</label>'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="X2AP" checked>X2AP</label>'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="RRC" checked>RRC</label>'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="BBMC" checked>BBMC</label>'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="NAS" checked>NAS</label>'+
+                         '    </div>'+
+                         '    <div style="margin:5px;">'+
+                         '     <p align="center">'+
+                         '       <button id="runAnalysis">开始</button>'+
+                         '     </p>'+
+                         '    </div>'+
+                         '   </div>'+
+                         '   <div style="position:absolute; right:0;top:0;width:20px;">'+
+                         '    <button id="close_btn_l" class="TMbtnLeft" style="width:20px;height:50px; border:0; margin:0;"><</button>'+
+                         '   </div>'+
+                         '  </div>'+
+                         ' </div>'+
+                         '</div>');
 
         var padString = function(oldString, tarLength){
             if (oldString.length >= tarLength){
@@ -85,10 +110,10 @@
                 var title = protocolAnalysis(divList[i].innerHTML);
                 divList[i].innerHTML =
                     '<div class="combine_l">'+
-                    '<div class="default title_l">'+
+                    '<div class="defaultl title_l">'+
                     title+
                     '</div>'+
-                    '<div class="default body_l" style="display:none;border:3px solid #0ff;">'+
+                    '<div class="defaultl body_l" style="display:none;border:3px solid #0ff;">'+
                     oldHtml+
                     '</div>'+
                     '</div>'+
@@ -96,19 +121,43 @@
             }
         };
 
+        var isChoosed = function(chechedList, keyWord){
+            for (var i = 0; i < chechedList.length; i++){
+                if (keyWord.indexOf(chechedList[i].value) != -1){
+                    return true;
+                }
+            }
+            return false;
+        };
+
         $('#runAnalysis').click(function(){
             document.body.style.backgroundColor = 'lightblue';
             funAnalysis();
-            $('.title_l').click(function(){
-                var bodyElem = $(this).parent(".combine_l").children(".body_l");
-                if (bodyElem[0].style.display == 'none')
-                    bodyElem[0].style.display = 'block';
-                else
-                    bodyElem[0].style.display = 'none';
-            });
+            var chechedList = $('input:checkbox[name="mode_choose_l"]:checked');
+            var divList = $('.default');
+            for (var i = 1; i < divList.length; i++){
+                var keyWord = ($(divList[i]).find(".title_l")[0].innerText.split(":"))[0];
+                if (isChoosed(chechedList, keyWord)){
+                    $(divList[i]).css('display','block');
+                    $(divList[i]).css('overflow','');
+                    $(divList[i]).css('height','');
+                }else{
+                    $(divList[i]).css('display','none');
+                    $(divList[i]).css('overflow','hidden');
+                    $(divList[i]).css('height','0');
+                }
+            }
         });
 
+        $('#open_btn_l').click(function(){
+            $('#closed_div')[0].style.display = "none";
+            $('#opened_div')[0].style.display = "inline";
+        });
 
+        $('#close_btn_l').click(function(){
+            $('#closed_div')[0].style.display = "inline";
+            $('#opened_div')[0].style.display = "none";
+        });
 
     });
     // Your code here...
