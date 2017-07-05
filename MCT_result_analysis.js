@@ -9,6 +9,7 @@
 // @require    http://code.jquery.com/jquery-1.11.0.min.js
 // ==/UserScript==
 var isIni = true;
+var selectedEle = null;
 (function() {
     'use strict';
     jQuery(document).ready(function() {
@@ -103,8 +104,6 @@ var isIni = true;
             catch (err){
                 return '!@#';
             }
-
-
         };
 
         var funAnalysis = function(){
@@ -117,7 +116,7 @@ var isIni = true;
                     '<div class="defaultl title_l">'+
                     title+
                     '</div>'+
-                    '<div class="defaultl body_l" style="display:none;border:3px solid #0ff;">'+
+                    '<div class="defaultl body_l" style="display:none;">'+
                     oldHtml+
                     '</div>'+
                     '</div>'+
@@ -145,6 +144,10 @@ var isIni = true;
                 funAnalysis();
                 isIni = false;
                 $('.title_l').click(function(){
+                    if (selectedEle !== null)
+                        selectedEle.css( 'background','lightblue');
+                    selectedEle = $(this).parent(".combine_l");
+                    selectedEle.css( 'background','Moccasin');
                     var bodyElem = $(this).parent(".combine_l").children(".body_l");
                     if (bodyElem[0].style.display == 'none')
                         bodyElem[0].style.display = 'block';
@@ -172,6 +175,10 @@ var isIni = true;
                 funAnalysis();
                 isIni = false;
                 $('.title_l').click(function(){
+                    if (selectedEle !== null)
+                        selectedEle.css( 'background','lightblue');
+                    selectedEle = $(this).parent(".combine_l");
+                    selectedEle.css( 'background','Moccasin');
                     var bodyElem = $(this).parent(".combine_l").children(".body_l");
                     if (bodyElem[0].style.display == 'none')
                         bodyElem[0].style.display = 'block';
