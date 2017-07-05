@@ -8,7 +8,7 @@
 // @grant        GM_addStyle
 // @require    http://code.jquery.com/jquery-1.11.0.min.js
 // ==/UserScript==
-
+var isIni = true;
 (function() {
     'use strict';
     jQuery(document).ready(function() {
@@ -24,8 +24,8 @@
                          '  <button id="open_btn_l" class="TMbtn" style="left:0;">></button>'+
                          ' </div>'+
                          ' <div id="opened_div" style="display:none">'+
-                         '  <div style="position:fixed; left:0;width:90px;height:50px;background-color:#ffff00;">'+
-                         '   <div style="width:70px;background-color:#ffff00;">'+
+                         '  <div style="position:fixed; left:0;width:100px;height:50px;background-color:#ffff00;">'+
+                         '   <div style="width:80px;background-color:#ffff00;">'+
                          '    <div style="margin:5px;">'+
                          '     <label><input type="checkbox" name="mode_choose_l" value="S1AP" checked>S1AP</label>'+
                          '     <label><input type="checkbox" name="mode_choose_l" value="X2AP" checked>X2AP</label>'+
@@ -132,7 +132,18 @@
 
         $('#runAnalysis').click(function(){
             document.body.style.backgroundColor = 'lightblue';
-            funAnalysis();
+            if (isIni){
+                console.log("init");
+                funAnalysis();
+                isIni = false;
+                $('.title_l').click(function(){
+                    var bodyElem = $(this).parent(".combine_l").children(".body_l");
+                    if (bodyElem[0].style.display == 'none')
+                        bodyElem[0].style.display = 'block';
+                    else
+                        bodyElem[0].style.display = 'none';
+                });
+            }
             var chechedList = $('input:checkbox[name="mode_choose_l"]:checked');
             var divList = $('.default');
             for (var i = 1; i < divList.length; i++){
