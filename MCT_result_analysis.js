@@ -35,7 +35,8 @@ var isIni = true;
                          '    </div>'+
                          '    <div style="margin:5px;">'+
                          '     <p align="center">'+
-                         '       <button id="runAnalysis">开始</button>'+
+                         '       <button id="runAnalysis">开始过滤</button>'+
+                         '       <button id="clearChooseMode">清除筛选</button>'+
                          '     </p>'+
                          '    </div>'+
                          '   </div>'+
@@ -131,8 +132,8 @@ var isIni = true;
         };
 
         $('#runAnalysis').click(function(){
-            document.body.style.backgroundColor = 'lightblue';
             if (isIni){
+                document.body.style.backgroundColor = 'lightblue';
                 console.log("init");
                 funAnalysis();
                 isIni = false;
@@ -157,6 +158,28 @@ var isIni = true;
                     $(divList[i]).css('overflow','hidden');
                     $(divList[i]).css('height','0');
                 }
+            }
+        });
+
+        $('#clearChooseMode').click(function(){
+            if (isIni){
+                document.body.style.backgroundColor = 'lightblue';
+                console.log("init");
+                funAnalysis();
+                isIni = false;
+                $('.title_l').click(function(){
+                    var bodyElem = $(this).parent(".combine_l").children(".body_l");
+                    if (bodyElem[0].style.display == 'none')
+                        bodyElem[0].style.display = 'block';
+                    else
+                        bodyElem[0].style.display = 'none';
+                });
+            }
+            var divList = $('.default');
+            for (var i = 1; i < divList.length; i++){
+                $(divList[i]).css('display','block');
+                $(divList[i]).css('overflow','');
+                $(divList[i]).css('height','');
             }
         });
 
