@@ -81,6 +81,14 @@ var selectedEle = null;
                                 firstKind = 'NC';
                                 secondKind = (txtInLines[i].split("\'"))[1];
                                 break;
+                            }else if (txtInLines[i].indexOf("RRC-MasterInformationBlock") != -1){
+                                firstKind = 'RRC';
+                                secondKind = (txtInLines[i].split("\'"))[1];
+                                break;
+                            }else if (txtInLines[i].indexOf("RRC-SystemInformation") != -1){
+                                firstKind = 'RRC';
+                                secondKind = (txtInLines[i].split("\'"))[1];
+                                break;
                             }else if (txtInLines[i].indexOf("RRC-") != -1){
                                 firstKind = 'RRC';
                             }else if (txtInLines[i].indexOf("X2AP") != -1){
