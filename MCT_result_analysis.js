@@ -152,12 +152,12 @@ var selectedEle = null;
                 funAnalysis();
                 isIni = false;
                 $('.title_l').click(function(){
-                    if (selectedEle !== null){
-                        selectedEle.css( 'background','lightblue');
-                        selectedEle.children(".body_l")[0].style.display = 'none';
+                    if (selectedEle !== null && selectedEle !== $(this).parent(".combine_l")[0]){
+                        $(selectedEle).css( 'background','lightblue');
+                        $(selectedEle).children(".body_l")[0].style.display = 'none';
                     }
-                    selectedEle = $(this).parent(".combine_l");
-                    selectedEle.css( 'background','Moccasin');
+                    selectedEle = $(this).parent(".combine_l")[0];
+                    $(selectedEle).css( 'background','Moccasin');
                     var bodyElem = $(this).parent(".combine_l").children(".body_l");
                     if (bodyElem[0].style.display == 'none')
                         bodyElem[0].style.display = 'block';
@@ -185,12 +185,12 @@ var selectedEle = null;
                 funAnalysis();
                 isIni = false;
                 $('.title_l').click(function(){
-                    if (selectedEle !== null){
-                        selectedEle.css( 'background','lightblue');
-                        selectedEle.children(".body_l")[0].style.display = 'none';
+                    if (selectedEle !== null && selectedEle !== $(this).parent(".combine_l")[0]){
+                        $(selectedEle).css( 'background','lightblue');
+                        $(selectedEle).children(".body_l")[0].style.display = 'none';
                     }
-                    selectedEle = $(this).parent(".combine_l");
-                    selectedEle.css( 'background','Moccasin');
+                    selectedEle = $(this).parent(".combine_l")[0];
+                    $(selectedEle).css( 'background','Moccasin');
                     var bodyElem = $(this).parent(".combine_l").children(".body_l");
                     if (bodyElem[0].style.display == 'none')
                         bodyElem[0].style.display = 'block';
