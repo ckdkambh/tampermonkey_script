@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
-// @match        http://tgfweb.lmera.ericsson.se/executions/*
+// @match        http://tgfweb.lmera.ericsson.se/executions/*.bin.html
 // @grant        GM_addStyle
 // @require    http://code.jquery.com/jquery-1.11.0.min.js
 // ==/UserScript==
