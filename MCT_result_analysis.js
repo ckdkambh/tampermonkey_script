@@ -152,8 +152,10 @@ var selectedEle = null;
                 funAnalysis();
                 isIni = false;
                 $('.title_l').click(function(){
-                    if (selectedEle !== null)
+                    if (selectedEle !== null){
                         selectedEle.css( 'background','lightblue');
+                        selectedEle.children(".body_l")[0].style.display = 'none';
+                    }
                     selectedEle = $(this).parent(".combine_l");
                     selectedEle.css( 'background','Moccasin');
                     var bodyElem = $(this).parent(".combine_l").children(".body_l");
@@ -183,8 +185,10 @@ var selectedEle = null;
                 funAnalysis();
                 isIni = false;
                 $('.title_l').click(function(){
-                    if (selectedEle !== null)
+                    if (selectedEle !== null){
                         selectedEle.css( 'background','lightblue');
+                        selectedEle.children(".body_l")[0].style.display = 'none';
+                    }
                     selectedEle = $(this).parent(".combine_l");
                     selectedEle.css( 'background','Moccasin');
                     var bodyElem = $(this).parent(".combine_l").children(".body_l");
