@@ -23,6 +23,9 @@ var tik = 0;
         $('body').before('<label id="log_l">'+
                          '总共0个, 完成0个'+
                          '</label>');
+        $('body').before('<button id="front_l">'+
+                         '上一个'+
+                         '</button>');
         $('body').before('<button id="next_l">'+
                          '下一个'+
                          '</button>');
@@ -38,14 +41,23 @@ var tik = 0;
             cmdList = word_list;
             tik = 0;
 
-            $('#log_l').html("总共"+cmdList.length+"个, 完成"+tik+"个");
+            $('#log_l').html("总共"+cmdList.length+"个, 当前准备完成"+(tik+1)+"个");
+            $("#start_l").attr({"disabled":"disabled"});
         });
 
         $('#next_l').click(()=>{
             if (tik<cmdList.length){
                 setTimeout(cmdList[tik]);
+                $('#log_l').html("总共"+cmdList.length+"个, 当前准备完成"+(tik+1)+"个");
                 tik++;
-                $('#log_l').html("总共"+cmdList.length+"个, 完成"+tik+"个");
+            }
+        });
+
+        $('#front_l').click(()=>{
+            if (tik>0){
+                tik--;
+                setTimeout(cmdList[tik]);
+                $('#log_l').html("总共"+cmdList.length+"个, 当前准备完成"+(tik+1)+"个");
             }
         });
     });
