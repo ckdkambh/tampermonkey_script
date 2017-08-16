@@ -44,7 +44,7 @@
                 setTimeout("if ($('span.zbyDdwb')[0] !== undefined) $('span.zbyDdwb')[0].click();",4000);
                 setTimeout("$('span.text')[0].click();",5000);
                 getdata(2);
-                setTimeout("$('span.text')[7].click();",10000);
+                setTimeout("$('span.zbyDdwb')[0] !== undefined ? $('span.text')[18].click() : $('span.text')[7].click();",10000);
                 setTimeout("window.location.reload();",15000);
             }
         });
