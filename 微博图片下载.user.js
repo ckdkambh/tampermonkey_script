@@ -8,7 +8,7 @@
 // @match        http://www.weibo.com/*
 // @grant        GM_setClipboard  
 // @grant        GM_addStyle
-// @require    http://code.jquery.com/jquery-1.11.0.min.js  
+// @require    http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 /* jshint -W097 */
 'use strict';
