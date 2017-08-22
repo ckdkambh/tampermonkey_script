@@ -7,7 +7,7 @@
 // @match        http://www.xiuren8.com/*
 // @grant        GM_setClipboard
 // @grant        GM_addStyle
-// @require    http://127.0.0.1:8080/jquery-3.1.1.js
+// @require    http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 /* jshint -W097 */
 'use strict';
