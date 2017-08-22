@@ -7,7 +7,7 @@
 // @match        https://pan.baidu.com/*
 // @grant        GM_xmlhttpRequest
 // @connect      127.0.0.1
-// @require      http://127.0.0.1:8070/jquery-3.1.1.js
+// @require      http://code.jquery.com/jquery-latest.js
 // @run-at document-end
 // ==/UserScript==
 /* jshint -W097 */
