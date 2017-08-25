@@ -28,11 +28,11 @@ var selectedEle = null;
                          '  <div style="position:fixed; left:0;width:120px;height:50px;background-color:#ffff00;">'+
                          '   <div style="width:100px;background-color:#ffff00;">'+
                          '    <div style="margin:5px;">'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="S1AP">S1AP</label><br />'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="X2AP">X2AP</label><br />'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="RRC">RRC</label><br />'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="BBMC">BBMC</label><br />'+
-                         '     <label><input type="checkbox" name="mode_choose_l" value="NAS">NAS</label>'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="S1AP-">S1AP</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="X2AP-">X2AP</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="RRC-">RRC</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="BBMC_">BBMC</label><br />'+
+                         '     <label><input type="checkbox" name="mode_choose_l" value="nas_">NAS</label>'+
                          '    </div>'+
                          '    <div style="margin:5px;">'+
                          '     <p align="center">'+
@@ -63,6 +63,7 @@ var selectedEle = null;
             try{
                 var txtInLines = bodyString.split("\n");
                 var title = (txtInLines[1].split("\""))[1];
+                var time = (txtInLines[1].split(" "))[1];
                 var firstKind, secondKind, j = 0;
                 for (var i = 2; i < txtInLines.length; i++){
                     txtInLines[i] = txtInLines[i].trim();
@@ -106,11 +107,11 @@ var selectedEle = null;
                         }
                     }
                 }
-                title = padString(firstKind,20)+":"+padString(secondKind,50)+"||"+padString(title,60);
+                title = padString(time,20)+padString(secondKind,70)+padString(title,60);
                 return title;
             }
             catch (err){
-                return '!@#';
+                return '????';
             }
         };
 
@@ -169,7 +170,7 @@ var selectedEle = null;
             var chechedList = $('input:checkbox[name="mode_choose_l"]:checked');
             var divList = $('.default');
             for (var i = 1; i < divList.length; i++){
-                var keyWord = ($(divList[i]).find(".title_l")[0].innerText.split(":"))[0];
+                var keyWord = $(divList[i]).find(".title_l")[0].innerText;
                 if (isChoosed(chechedList, keyWord)){
                     $(divList[i]).clone(true).css('margin', '5px').appendTo("#filter_div");
                 }
