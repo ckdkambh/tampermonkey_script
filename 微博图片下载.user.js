@@ -42,6 +42,9 @@ var videoLinkSet = new Set();
                     return '';
                 }
             });
+            linkList = linkList.map(function(x){
+                return x.startsWith('http:') ? x : 'http:'+x;
+            });
             return linkList;
         };
 
