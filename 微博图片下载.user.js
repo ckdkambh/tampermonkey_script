@@ -8,7 +8,7 @@
 // @match        http://www.weibo.com/*
 // @grant        GM_setClipboard  
 // @grant        GM_addStyle
-// @require    http://code.jquery.com/jquery-latest.js
+// @require     http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 /* jshint -W097 */
 'use strict';
@@ -53,6 +53,9 @@ var videoLinkSet = new Set();
             }
             linkList = linkList.filter(function(x){
                 return x != null && x != "";
+            });
+            linkList = linkList.map(function(x){
+                return x.startsWith('http:') ? x : 'http:'+x;
             });
             return linkList;
         };
