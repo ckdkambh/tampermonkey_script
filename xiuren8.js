@@ -24,7 +24,12 @@
             try{
                 downLink = $($("#myDiv pre pre")[0])[0].innerHTML;
             }catch(e){
-                downLink = $($("#myDiv pre")[0])[0].innerHTML;
+                try{
+                    downLink = $($("#myDiv pre")[0])[0].innerHTML;
+                }
+                catch(e){
+                    console.log('%o', partList[i].innerHTML);
+                }
             }
             console.log(downLink);
             linkString += (downLink+'\n');
