@@ -29,6 +29,7 @@
                 }
                 catch(e){
                     console.log('%o', partList[i].innerHTML);
+                    continue;
                 }
             }
             console.log(downLink);
