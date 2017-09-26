@@ -68,6 +68,7 @@ var tik = 0;
         $('#set_index_l').click(()=>{
             var index = parseInt($("#index_l").val());
             console.log(index);
+            index--;
             index = index < 0 ? 0 : (index > cmdList.length - 1 ? cmdList.length - 1 : index);
             tik = index;
             if (tik<cmdList.length){
