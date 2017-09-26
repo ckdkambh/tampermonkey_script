@@ -29,6 +29,10 @@ var tik = 0;
         $('body').before('<button id="next_l">'+
                          '下一个'+
                          '</button>');
+        $('body').before('<input id="index_l" type="text">');
+        $('body').before('<button id="set_index_l">'+
+                         '设置'+
+                         '</button>');
 
         $('#start_l').click(()=>{
             var word_list = $("#input_box_l")[0].value.split("\n");
@@ -58,6 +62,18 @@ var tik = 0;
                 tik--;
                 setTimeout(cmdList[tik]);
                 $('#log_l').html("总共"+cmdList.length+"个, 当前准备完成"+(tik+1)+"个");
+            }
+        });
+
+        $('#set_index_l').click(()=>{
+            var index = parseInt($("#index_l").val());
+            console.log(index);
+            index = index < 0 ? 0 : (index > cmdList.length - 1 ? cmdList.length - 1 : index);
+            tik = index;
+            if (tik<cmdList.length){
+                setTimeout(cmdList[tik]);
+                $('#log_l').html("总共"+cmdList.length+"个, 当前准备完成"+(tik+1)+"个");
+                tik++;
             }
         });
     });
