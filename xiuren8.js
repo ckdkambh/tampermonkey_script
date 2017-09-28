@@ -13,11 +13,7 @@
 'use strict';
 (function(){
     jQuery(document).ready(function() {
-       // $('#__QQCP_RIGHT_Div').remove();
-        //$('#__QQCP_LEFT_Div').remove();
-       // $('#__mhcm_r_b_4468').remove();
-
-        console.log('1234');
+        console.log('1234 run');
         var c_n = $('body').children();
         console.log('%o', c_n);
         c_n.map((x)=>{
@@ -55,6 +51,7 @@
                     }
                 }
                 console.log(downLink);
+                console.log('剩余%d条', partList.length-i-1);
                 linkString += (downLink+'\n');
                 linkCount++;
                 $("#myDiv").html('');
