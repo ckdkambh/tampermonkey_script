@@ -48,8 +48,10 @@ var selectedEle = null;
                          ' </div>'+
                          '</div>');
 
-        $('body').append('<div id="filter_div" style="display:none;white-space:pre;margin:0 5 0 5;">'+
-                         '</div>');
+        $('body').append('<pre id="filter_pre" style="display:none;">'+
+                         '<div id="filter_div" style="margin:5 5 5 5;">'+
+                         '</div>'+
+                         '</pre>');
 
         var padString = function(oldString, tarLength){
             if (oldString.length >= tarLength){
@@ -120,6 +122,8 @@ var selectedEle = null;
             for (var i = 1; i < divList.length; i++){
                 var oldHtml = divList[i].innerHTML;
                 var title = protocolAnalysis(divList[i].innerHTML);
+                console.log(oldHtml);
+                console.log(title);
                 divList[i].innerHTML =
                     '<div class="combine_l">'+
                     '<div class="defaultl title_l">'+
@@ -174,8 +178,8 @@ var selectedEle = null;
                 if (isChoosed(chechedList, keyWord)){
                     $(divList[i]).clone(true).css('margin', '5px').appendTo("#filter_div");
                 }
-                $('#filter_div').css('display','block');
                 $('pre').css('display','none');
+                $('#filter_pre').css('display','block');
             }
         });
 
@@ -201,8 +205,8 @@ var selectedEle = null;
             }
             cleanFilterDiv();
             var divList = $('.default');
-            $('#filter_div').css('display','none');
             $('pre').css('display','block');
+            $('#filter_pre').css('display','none');
         });
 
         $('#open_btn_l').click(function(){
