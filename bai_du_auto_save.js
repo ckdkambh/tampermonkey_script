@@ -61,14 +61,17 @@
             }
 
             if (result == '1'){
-                if ($('#accessCode')[0] !== undefined){
+                if ($('#rpb0W5J')[0] !== undefined){
                     getdata(1).then(function(result1){
+                        console.log('1');
                         console.log(result1);
-                        $('#accessCode')[0].value = result1;
+                        $('#rpb0W5J')[0].value = result1;
+                        console.log($('#rpb0W5J')[0].value);
                         $('span.text').click();
                     })
                 } else {
                     getdata(1).then(function(result1){
+                        console.log('2');
                         console.log(result1);
                     })
                     result = '2';
@@ -78,26 +81,31 @@
             if (result == '2'){
                 getdata(2);
                 my_timer(3000).then(function(){
+                    console.log('3');
                     if ($('span.zbyDdwb')[0] !== undefined){
                         $('span.zbyDdwb')[0].click();
                     }
                 });
 
                 my_timer(5000).then(function(){
+                    console.log('4');
                     $('span.text')[0].click();
                 });
 
                 my_timer_checker(function(){
+                    console.log('5');
                     return $('span.treeview-txt')[1] !== undefined;
                 }).then(function(){
-                    if ($('span.zbyDdwb')[0] !== undefined){
-                        $('span.text')[24].click();
-                    } else {
-                        $('span.text')[7].click();
+                    console.log('6');
+                    for (var i = 0; i < $('span.text').length; i++){
+                        if ($('span.text')[i].innerHTML === "确定"){
+                            $('span.text')[i].click();
+                        }
                     }
                 });
 
                 my_timer_checker(function(){
+                    console.log('7');
                     if ($('span.tip-msg')[0] === undefined){
                         return false;
                     }else if ($('span.tip-msg').children('a')[0] === undefined){
@@ -106,6 +114,7 @@
                         return $('span.tip-msg').children('a')[0].innerHTML === "点击查看";
                     }
                 }).then(function(){
+                    console.log('8');
                     window.location.reload();
                 });
             }
