@@ -37,13 +37,21 @@
             var partList = $("a.product-title");
             for (var i = 0; i < partList.length; i++){
                 var htmlobj=$.ajax({url:partList[i]["href"],async:false});
+                try{
                 $("#myDiv").html(htmlobj.responseText);
+                }catch(e){
+                    console.log('e');
+                }
                 var downLink;
                 try{
+                    console.log('1');
                     downLink = $($("#myDiv pre pre")[0])[0].innerHTML;
+                    console.log('%o', downLink);
                 }catch(e){
                     try{
+                        console.log('2');
                         downLink = $($("#myDiv pre")[0])[0].innerHTML;
+                        console.log('%o', downLink);
                     }
                     catch(e){
                         console.log('%o', partList[i].innerHTML);
