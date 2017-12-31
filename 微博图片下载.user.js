@@ -170,24 +170,6 @@ var videoLinkSet = new Set();
             }
         };
 
-        //自动滚动点击函数
-        var autoscroll = function(){
-            var wbList = $('.WB_feed_detail.clearfix');
-            console.log(wbList);
-            wbList.map(analysisWb);
-            if ($('.layer_menu_list.W_scroll').length !== 0)
-            {
-                console.log('find end of the page');
-                getVideoLink();
-                return;
-            }
-            else
-            {
-                console.log('start timer to observe ');
-                my_timer(2000).then(autoscroll);
-            }
-        };
-
         var numOfWb = 0;
         var getVideoLink = function(){
             if (numOfWb >= $('.WB_feed_detail.clearfix').length)
@@ -222,6 +204,25 @@ var videoLinkSet = new Set();
                 getVideoLink();
             }
         }
+
+        //自动滚动点击函数
+        var autoscroll = function(){
+            var wbList = $('.WB_feed_detail.clearfix');
+            console.log(wbList);
+            wbList.map(analysisWb);
+            if ($('.layer_menu_list.W_scroll').length !== 0)
+            {
+                console.log('find end of the page');
+                numOfWb = 0;
+                getVideoLink();
+                return;
+            }
+            else
+            {
+                console.log('start timer to observe ');
+                my_timer(2000).then(autoscroll);
+            }
+        };
 
         $('#test_btn_l').click(function(){
             autoscroll();
