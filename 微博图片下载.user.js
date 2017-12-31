@@ -81,8 +81,7 @@ var videoLinkSet = new Set();
             alert('已经复制'+linkCount+'条连接进入剪切板');
         };
 
-        $(document).scroll(function(){
-            console.log('monitor scroll');
+        var videoLinkRecorder = function(){
             linkList = videoSearch();
             for(var i = 0; i < linkList.length; i++){
                 var oldSize = videoLinkSet.size;
@@ -91,6 +90,11 @@ var videoLinkSet = new Set();
                     console.log('发现新链接'+linkList[i]);
                 }
             }
+        }
+
+        $(document).scroll(function(){
+            console.log('monitor scroll');
+            videoLinkRecorder();
         });
 
         $('body').append('<div id="TManays">'+
@@ -130,7 +134,7 @@ var videoLinkSet = new Set();
 
         //定时检查函数，每一秒检查一次
         //局限，当前不支持传入带参数的函数
-        var my_timer_checker = function(isOneTime, fun){
+        var my_timer_checker = function(fun){
             console.log('my_timer_checker start');
             return new Promise(function (resolve, reject) {
                 var loop = function(){
@@ -174,14 +178,50 @@ var videoLinkSet = new Set();
             if ($('.layer_menu_list.W_scroll').length !== 0)
             {
                 console.log('find end of the page');
+                getVideoLink();
                 return;
             }
             else
             {
-                console.log('start timer to observe end of page');
+                console.log('start timer to observe ');
                 my_timer(2000).then(autoscroll);
             }
         };
+
+        var numOfWb = 0;
+        var getVideoLink = function(){
+            if (numOfWb >= $('.WB_feed_detail.clearfix').length)
+            {
+                return;
+            }
+            console.log('there are %d wb left to analysis', $('.WB_feed_detail.clearfix').length - numOfWb);
+            var curWb = $('.WB_feed_detail.clearfix')[numOfWb];
+            var videoProLink = $(curWb).find('.con-1.hv-pos');
+            if (videoProLink.length !== 0)
+            {
+                videoProLink.click();
+                my_timer_checker(function(){
+                    if ($($('.WB_feed_detail.clearfix')[numOfWb]).find('video').length !== 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }).then(function(){
+                    console.log('%O', videoProLink);
+                    $($('.WB_feed_detail.clearfix')[numOfWb]).find('video').click();
+                    videoLinkRecorder();
+                    numOfWb++;
+                    getVideoLink();
+                });
+            }
+            else{
+                numOfWb++;
+                getVideoLink();
+            }
+        }
 
         $('#test_btn_l').click(function(){
             autoscroll();
@@ -189,7 +229,7 @@ var videoLinkSet = new Set();
 
 
 
-/*
+        /*
         //.WB_feed_detail.clearfix是每条微博最上层的控件，所以能引用offsetTop进行跳转
         $('#test_btn_l').click(function(){
             console.log('%O', $('.WB_feed_detail.clearfix')[numToRoll]);
