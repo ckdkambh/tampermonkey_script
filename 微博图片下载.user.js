@@ -110,8 +110,8 @@ var videoLinkSet = new Set();
                          '    </div>'+
                          '    <div style="margin:5px;">'+
                          '     <p align="center">'+
-                         '       <button id="start_btn_l">开始</button>'+
-                         '       <button id="test_btn_l">测试</button>'+
+                         '       <button id="start_btn_l">复制</button>'+
+                         '       <button id="test_btn_l">解析</button>'+
                          '     </p>'+
                          '    </div>'+
                          '   </div>'+
