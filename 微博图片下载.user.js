@@ -6,6 +6,7 @@
 // @author       You
 // @match        http://weibo.com/*
 // @match        http://www.weibo.com/*
+// @match        https://weibo.com/*
 // @grant        GM_setClipboard  
 // @grant        GM_addStyle
 // @require     http://code.jquery.com/jquery-latest.js
@@ -81,6 +82,7 @@ var videoLinkSet = new Set();
         };
 
         $(document).scroll(function(){
+            console.log('monitor scroll');
             linkList = videoSearch();
             for(var i = 0; i < linkList.length; i++){
                 var oldSize = videoLinkSet.size;
@@ -105,6 +107,7 @@ var videoLinkSet = new Set();
                          '    <div style="margin:5px;">'+
                          '     <p align="center">'+
                          '       <button id="start_btn_l">开始</button>'+
+                         '       <button id="test_btn_l">测试</button>'+
                          '     </p>'+
                          '    </div>'+
                          '   </div>'+
@@ -124,7 +127,86 @@ var videoLinkSet = new Set();
             $('#opened_div')[0].style.display = "none";
         });
         $('#start_btn_l').click(processStart);
-        
+
+        //定时检查函数，每一秒检查一次
+        //局限，当前不支持传入带参数的函数
+        var my_timer_checker = function(isOneTime, fun){
+            console.log('my_timer_checker start');
+            return new Promise(function (resolve, reject) {
+                var loop = function(){
+                    my_timer(1000).then(function(){
+                        if (!fun()){
+                            loop();
+                        }else{
+                            console.log('my_timer_checker stop');
+                            resolve();
+                        }
+                    });
+                };
+                loop();
+            });
+        };
+
+        var my_timer = function(length){
+            return new Promise(function (resolve, reject) {
+                setTimeout(resolve, length);
+            });
+        };
+
+        //待滚动高度
+        var heightToSet = 0;
+
+        var analysisWb = function(index,val,arr){
+            console.log('%O', val);
+            heightToSet += val.offsetTop;
+            $(document).scrollTop(heightToSet);
+            if ($(val).find('.con-1.hv-pos').length !== 0)
+            {
+                console.log('###find a video');
+            }
+        };
+
+        //自动滚动点击函数
+        var autoscroll = function(){
+            var wbList = $('.WB_feed_detail.clearfix');
+            console.log(wbList);
+            wbList.map(analysisWb);
+            if ($('.layer_menu_list.W_scroll').length !== 0)
+            {
+                console.log('find end of the page');
+                return;
+            }
+            else
+            {
+                console.log('start timer to observe end of page');
+                my_timer(2000).then(autoscroll);
+            }
+        };
+
+        $('#test_btn_l').click(function(){
+            autoscroll();
+        });
+
+
+
+/*
+        //.WB_feed_detail.clearfix是每条微博最上层的控件，所以能引用offsetTop进行跳转
+        $('#test_btn_l').click(function(){
+            console.log('%O', $('.WB_feed_detail.clearfix')[numToRoll]);
+
+            hToSet += $('.WB_feed_detail.clearfix')[numToRoll].offsetTop;
+            $(document).scrollTop(hToSet);
+
+            //console.log($($('.WB_feed_detail.clearfix')[numToRoll]).find('*'));
+
+            if ($($('.WB_feed_detail.clearfix')[numToRoll]).find('.con-1.hv-pos').length !== 0)
+            {
+                console.log('find a video')
+
+            }
+            numToRoll++;
+        });
+*/
     });
 })();
 
