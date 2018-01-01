@@ -7,6 +7,7 @@
 // @match        http://weibo.com/*
 // @match        http://www.weibo.com/*
 // @match        https://weibo.com/*
+// @match        https://www.weibo.com/*
 // @grant        GM_setClipboard  
 // @grant        GM_addStyle
 // @require     http://code.jquery.com/jquery-latest.js
@@ -214,6 +215,7 @@ var videoLinkSet = new Set();
             {
                 console.log('find end of the page');
                 numOfWb = 0;
+                videoLinkSet.clear();
                 getVideoLink();
                 return;
             }
