@@ -18,7 +18,7 @@
 左上角是选项，单击选择执行另外的选项，双击执行当前的选项
 输出到剪切板
 */
-var videoLinkSet = new Set(); 
+var videoLinkSet = new Map();
 (function(){
     jQuery(document).ready(function() {
         GM_addStyle('#TManays{z-index:999999; position:absolute; left:0px; top:50%; height:auto; border:0; margin:0;background-color:#ffff00;}'+
@@ -47,56 +47,64 @@ var videoLinkSet = new Set();
             linkList = linkList.map(function(x){
                 return x.startsWith('http:') ? x : 'http:'+x;
             });
+            console.log('imgSearch:%O', linkList)
             return linkList;
         };
 
         var videoSearch = function(){
             var videoList = $('video');
-            var linkList = new Array();
+            var resultList = new Array();
             for(var i = 0; i < videoList.length; i++){
-                linkList.push(videoList[i].getAttribute('src'));
+                var videoLinkGet = videoList[i].getAttribute('src');
+                if (videoLinkGet !== null && videoLinkGet !== "")
+                {
+                    var textGet = $(videoList[i]).parents('.WB_detail')[0].innerText.replace('\n','').replace(/\s/g,'').substring(0, 60)
+                    var outLink = videoLinkGet.startsWith('http:') ? videoLinkGet : 'http:' + videoLinkGet;
+                    resultList.push({link:outLink, text:textGet});
+                }
             }
-            linkList = linkList.filter(function(x){
-                return x != null && x != "";
-            });
-            linkList = linkList.map(function(x){
-                return x.startsWith('http:') ? x : 'http:'+x;
-            });
-            return linkList;
+            return resultList;
         };
 
         var processStart = function(){
             var val=$('input:radio[name="mode_choose_l"]:checked').val();
+            var linkString='';
+            var linkCount = 0;
+            var linkList;
+
             if (val == 1){
                 linkList = imgSearch();
             }else{
                 linkList = videoLinkSet;
             }
-            var linkString='';
-            var linkCount = 0;
-            for(var i of linkList){
-                linkString = linkString + i +'\r\n ';
+            linkList.forEach(function (value, key, map) {
+                linkString = linkString + key +'\r\n'+ value +'\r\n';
                 linkCount++;
-            }
+            });
             GM_setClipboard(linkString);
             alert('已经复制'+linkCount+'条连接进入剪切板');
         };
 
+
         var videoLinkRecorder = function(){
-            linkList = videoSearch();
+            var linkList = videoSearch();
+            console.log(linkList);
             for(var i = 0; i < linkList.length; i++){
                 var oldSize = videoLinkSet.size;
-                videoLinkSet.add(linkList[i]);
+                videoLinkSet.set(linkList[i]['link'], linkList[i]['text']);
                 if (oldSize != videoLinkSet.size){
-                    console.log('发现新链接'+linkList[i]);
+                    console.log('发现新链接'+linkList[i]['link']);
+                    console.log(linkList[i]['text']);
                 }
             }
-        }
+        };
 
+        /*
         $(document).scroll(function(){
             console.log('monitor scroll');
             videoLinkRecorder();
         });
+        */
 
         $('body').append('<div id="TManays">'+
                          ' <div id="closed_div" style="display:inline">'+
@@ -107,7 +115,7 @@ var videoLinkSet = new Set();
                          '   <div style="width:100px;">'+
                          '    <div style="margin:5px;">'+
                          '     <label><input type="radio" name="mode_choose_l" value="1" checked>图片</label>'+
-                         '     <label><input type="radio" name="mode_choose_l" value="2">视频</label>'+    
+                         '     <label><input type="radio" name="mode_choose_l" value="2">视频</label>'+
                          '    </div>'+
                          '    <div style="margin:5px;">'+
                          '     <p align="center">'+
@@ -204,7 +212,7 @@ var videoLinkSet = new Set();
                 numOfWb++;
                 getVideoLink();
             }
-        }
+        };
 
         //自动滚动点击函数
         var autoscroll = function(){
