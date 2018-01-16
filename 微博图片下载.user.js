@@ -58,9 +58,14 @@ var videoLinkSet = new Map();
                 var videoLinkGet = videoList[i].getAttribute('src');
                 if (videoLinkGet !== null && videoLinkGet !== "")
                 {
-                    var textGet = $(videoList[i]).parents('.WB_detail')[0].innerText.replace('\n','').replace(/\s/g,'').substring(0, 60)
+                    var dateGet = $($($(videoList[i]).parents('.WB_detail')[0]).find('.WB_from.S_txt2')[0]).find('a')[0].innerText;
+                    dateGet = dateGet.replace('\n','').replace(/\s/g,'');
+                    var txtGet = $($(videoList[i]).parents('.WB_detail')[0]).find('.WB_text.W_f14')[0].innerText;
+                    txtGet = txtGet.replace('\n','').replace(/\s/g,'');
+                    var text = dateGet + txtGet;
+                    //innerText.replace('\n','').replace(/\s/g,'').substring(0, 60)
                     var outLink = videoLinkGet.startsWith('http:') ? videoLinkGet : 'http:' + videoLinkGet;
-                    resultList.push({link:outLink, text:textGet});
+                    resultList.push({link:outLink, text:text});
                 }
             }
             return resultList;
@@ -99,12 +104,12 @@ var videoLinkSet = new Map();
             }
         };
 
-        /*
+/*
         $(document).scroll(function(){
             console.log('monitor scroll');
             videoLinkRecorder();
         });
-        */
+*/
 
         $('body').append('<div id="TManays">'+
                          ' <div id="closed_div" style="display:inline">'+
