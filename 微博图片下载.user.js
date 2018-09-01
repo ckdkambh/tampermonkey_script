@@ -32,6 +32,7 @@ var videoLinkSet = new Map();
         var heightToSet = 0;
         var numOfWb = 0;
         var video_class = '.WB_video.WB_video_mini';
+        var post_list;
         //----------------------------------
         var imgSearch = function(){
             var imgList = $('img');
@@ -58,7 +59,7 @@ var videoLinkSet = new Map();
         };
 
         var videoSearch = function(){
-            var curWb = $('.WB_feed_detail.clearfix')[numOfWb];
+            var curWb = post_list[numOfWb];
             var videoList = $(curWb).find('video');
             var resultList = new Array();
             for(var i = 0; i < videoList.length; i++){
@@ -190,29 +191,34 @@ var videoLinkSet = new Map();
         };
 
         var getVideoLink = function(){
-            if (numOfWb >= $('.WB_feed_detail.clearfix').length)
+            var count = 0;
+            if (numOfWb >= post_list.length)
             {
                 console.log('analysis end');
                 return;
             }
-            console.log('there are %d wb left to analysis', $('.WB_feed_detail.clearfix').length - numOfWb);
-            var curWb = $('.WB_feed_detail.clearfix')[numOfWb];
+            console.log('there are %d wb left to analysis', post_list.length - numOfWb);
+            var curWb = post_list[numOfWb];
             var videoProLink = $(curWb).find(video_class);
+            heightToSet = curWb.offsetTop;
+            $(document).scrollTop(heightToSet);
             if (videoProLink.length !== 0)
             {
-                videoProLink.click();
+                //$(curWb).find('.wbv-big-play-button').click();
                 my_timer_checker(function(){
-                    if ($(curWb).find('video').length !== 0)
+                    if ($(curWb).find('video').length !== 0 || count > 100)
                     {
                         return true;
                     }
                     else
                     {
+                        count++;
+                        console.log('%o', $(curWb));
                         return false;
                     }
                 }).then(function(){
                     console.log('%O', videoProLink);
-                    $($('.WB_feed_detail.clearfix')[numOfWb]).find('video').click();
+                    //$(curWb).find('.wbv-big-play-button').click();
                     videoLinkRecorder();
                     numOfWb++;
                     getVideoLink();
@@ -233,7 +239,9 @@ var videoLinkSet = new Map();
             {
                 console.log('find end of the page');
                 numOfWb = 0;
+                heightToSet = 0;
                 videoLinkSet.clear();
+                post_list = $('.WB_feed_detail.clearfix');
                 getVideoLink();
                 return;
             }
@@ -245,6 +253,7 @@ var videoLinkSet = new Map();
         };
 
         $('#test_btn_l').click(function(){
+            heightToSet = 0;
             autoscroll();
         });
 
