@@ -27,6 +27,12 @@ var videoLinkSet = new Map();
                     '.TMbtnLeft{opacity:0.6; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} '+
                     '.TMbtnLeft:hover{width:25px; opacity:1;} ');
 
+        //-------GOLOBAL VALUE--------------
+        //待滚动高度
+        var heightToSet = 0;
+        var numOfWb = 0;
+        var video_class = '.WB_video.WB_video_mini';
+        //----------------------------------
         var imgSearch = function(){
             var imgList = $('img');
             var linkList = new Array();
@@ -52,7 +58,8 @@ var videoLinkSet = new Map();
         };
 
         var videoSearch = function(){
-            var videoList = $('video');
+            var curWb = $('.WB_feed_detail.clearfix')[numOfWb];
+            var videoList = $(curWb).find('video');
             var resultList = new Array();
             for(var i = 0; i < videoList.length; i++){
                 var videoLinkGet = videoList[i].getAttribute('src');
@@ -154,6 +161,7 @@ var videoLinkSet = new Map();
                 var loop = function(){
                     my_timer(1000).then(function(){
                         if (!fun()){
+                            console.log('my_timer_checker looping...');
                             loop();
                         }else{
                             console.log('my_timer_checker stop');
@@ -171,33 +179,30 @@ var videoLinkSet = new Map();
             });
         };
 
-        //待滚动高度
-        var heightToSet = 0;
-
         var analysisWb = function(index,val,arr){
             console.log('%O', val);
             heightToSet += val.offsetTop;
             $(document).scrollTop(heightToSet);
-            if ($(val).find('.con-1.hv-pos').length !== 0)
+            if ($(val).find(video_class).length !== 0)
             {
                 console.log('###find a video');
             }
         };
 
-        var numOfWb = 0;
         var getVideoLink = function(){
             if (numOfWb >= $('.WB_feed_detail.clearfix').length)
             {
+                console.log('analysis end');
                 return;
             }
             console.log('there are %d wb left to analysis', $('.WB_feed_detail.clearfix').length - numOfWb);
             var curWb = $('.WB_feed_detail.clearfix')[numOfWb];
-            var videoProLink = $(curWb).find('.con-1.hv-pos');
+            var videoProLink = $(curWb).find(video_class);
             if (videoProLink.length !== 0)
             {
                 videoProLink.click();
                 my_timer_checker(function(){
-                    if ($($('.WB_feed_detail.clearfix')[numOfWb]).find('video').length !== 0)
+                    if ($(curWb).find('video').length !== 0)
                     {
                         return true;
                     }
@@ -222,7 +227,7 @@ var videoLinkSet = new Map();
         //自动滚动点击函数
         var autoscroll = function(){
             var wbList = $('.WB_feed_detail.clearfix');
-            console.log(wbList);
+            //console.log(wbList);
             wbList.map(analysisWb);
             if ($('.layer_menu_list.W_scroll').length !== 0)
             {
