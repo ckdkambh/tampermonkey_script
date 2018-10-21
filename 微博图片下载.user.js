@@ -52,7 +52,7 @@ var videoLinkSet = new Map();
                 }
             });
             linkList = linkList.map(function(x){
-                return x.startsWith('http:') ? x : 'http:'+x;
+                return x.startsWith('http') ? x : 'http:'+x;
             });
             console.log('imgSearch:%O', linkList)
             return linkList;
