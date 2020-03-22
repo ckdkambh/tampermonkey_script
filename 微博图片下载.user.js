@@ -8,7 +8,7 @@
 // @match        http://www.weibo.com/*
 // @match        https://weibo.com/*
 // @match        https://www.weibo.com/*
-// @grant        GM_setClipboard  
+// @grant        GM_setClipboard
 // @grant        GM_addStyle
 // @require     http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
@@ -40,6 +40,17 @@ var videoLinkSet = new Map();
             for(var i = 0; i < imgList.length; i++){
                 linkList.push(imgList[i].getAttribute('src'));
             }
+            var picList = $('.WB_media_a_m9');
+            for (i = 0; i < picList.length; i++) {
+                var firstIndex = picList[i].getAttribute('action-data').indexOf('picSrc=') + 'picSrc='.length;
+                var lastIndex = picList[i].getAttribute('action-data').indexOf('&uid=');
+                console.log('%s', picList[i].getAttribute('action-data').substring(firstIndex, lastIndex).replace(/&thumb_picSrc=/g, ","));
+                picList[i].getAttribute('action-data').substring(firstIndex, lastIndex).replace(/&thumb_picSrc=/g, ",").split(',').map(function(x){
+                    linkList.push("http:"+x.replace(/%2F/g, "/"));
+
+                    return "";
+                })
+            }
             linkList = linkList.filter(function(x){
                 return x.indexOf('thumb150') != -1;
             });
@@ -51,6 +62,7 @@ var videoLinkSet = new Map();
                     return '';
                 }
             });
+
             linkList = linkList.map(function(x){
                 return x.startsWith('http') ? x : 'http:'+x;
             });
@@ -73,6 +85,10 @@ var videoLinkSet = new Map();
                     var text = dateGet + txtGet;
                     //innerText.replace('\n','').replace(/\s/g,'').substring(0, 60)
                     var outLink = videoLinkGet.startsWith('http:') ? videoLinkGet : 'http:' + videoLinkGet;
+                    //if (outLink.startsWith('http:blob:')) {
+                    //    outLink = outLink.substr('http:blob:'.length);
+                    //    console.log('outLink:%s', outLink)
+                    //}
                     resultList.push({link:outLink, text:text});
                 }
             }
@@ -206,12 +222,17 @@ var videoLinkSet = new Map();
             {
                 //$(curWb).find('.wbv-big-play-button').click();
                 my_timer_checker(function(){
-                    if ($(curWb).find('video').length !== 0 || count > 100)
+                    if ($(curWb).find('video').length !== 0 || count > 2)
                     {
                         return true;
                     }
                     else
                     {
+//                         if ($(curWb).find('.icon_playvideo').length !== 0) {
+//                             console.log('%O', $(curWb).find('.ficon_cd_video'));
+//                             $(curWb).find('.ficon_cd_video').click();
+//                             return true;
+//                         }
                         count++;
                         console.log('%o', $(curWb));
                         return false;
