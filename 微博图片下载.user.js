@@ -10,6 +10,7 @@
 // @match        https://www.weibo.com/*
 // @grant        GM_setClipboard
 // @grant        GM_addStyle
+// @grant        GM_xmlhttpRequest
 // @require     http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 /* jshint -W097 */
@@ -151,6 +152,10 @@ var videoLinkSet = new Map();
                          '       <button id="start_btn_l">复制</button>'+
                          '       <button id="test_btn_l">解析</button>'+
                          '     </p>'+
+                         '     <p align="center">'+
+                         '       <button id="read_link">读取</button>'+
+                         '       <button id="reset_link">清除</button>'+
+                         '     </p>'+
                          '    </div>'+
                          '   </div>'+
                          '   <div style="position:absolute; right:0;top:0;width:20px;">'+
@@ -220,9 +225,10 @@ var videoLinkSet = new Map();
             $(document).scrollTop(heightToSet);
             if (videoProLink.length !== 0)
             {
+                $(curWb).find('.ficon_cd_video').click();
                 //$(curWb).find('.wbv-big-play-button').click();
                 my_timer_checker(function(){
-                    if ($(curWb).find('video').length !== 0 || count > 2)
+                    if ($(curWb).find('video').length !== 0 || count > 1)
                     {
                         return true;
                     }
@@ -239,6 +245,8 @@ var videoLinkSet = new Map();
                     }
                 }).then(function(){
                     console.log('%O', videoProLink);
+                    //console.log('!!!!!!!!%O', $(curWb).find('.W_ficon .ficon_cd_video').parents());
+                    //$(curWb).find('.W_ficon .ficon_cd_video').click();
                     //$(curWb).find('.wbv-big-play-button').click();
                     videoLinkRecorder();
                     numOfWb++;
@@ -272,12 +280,33 @@ var videoLinkSet = new Map();
                 my_timer(2000).then(autoscroll);
             }
         };
-
+        var getdata = function (context) {
+            console.log(context);
+            return new Promise(function (resolve, reject) {
+                GM_xmlhttpRequest({method:'GET',
+                                   url:'http://192.168.31.40:8070/'+context,
+                                   onload : function (response) {
+                                       resolve(response.responseText);
+                                   }});
+            });
+        };
         $('#test_btn_l').click(function(){
             heightToSet = 0;
             autoscroll();
         });
 
+        $('#read_link').click(function(){
+            getdata('read123123123').then(function(result){
+                GM_setClipboard(result);
+                alert('已经复制连接进入剪切板');
+            });
+        });
+        $('#reset_link').click(function(){
+            getdata('reset123123123').then(function(result){
+                GM_setClipboard(result);
+                alert('已经清除服务器连接');
+            });
+        });
 
 
         /*
