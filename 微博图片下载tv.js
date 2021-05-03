@@ -14,6 +14,7 @@
 
 (function() {
     'use strict';
+    var url = "http://192.168.0.108:8070/";
     jQuery(document).ready(function() {
         var my_timer = function(length){
             return new Promise(function (resolve, reject) {
@@ -40,7 +41,7 @@
         var getdata = function (context) {
             return new Promise(function (resolve, reject) {
                 GM_xmlhttpRequest({method:'GET',
-                                   url:'http://192.168.31.40:8070/'+context,
+                                   url:url + context,
                                    onload : function (response) {
                                        resolve(response.responseText);
                                    }});
