@@ -21,6 +21,7 @@
 */
 var videoLinkSet = new Map();
 (function(){
+    var url = "http://192.168.0.108:8070/";
     jQuery(document).ready(function() {
         GM_addStyle('#TManays{z-index:999999; position:absolute; left:0px; top:50%; height:auto; border:0; margin:0;background-color:#ffff00;}'+
                     '.TMbtn{position:fixed; opacity:0.6; height:50px; width:15px; border-width:2px 4px 2px 0px; border-color:#ffff00; border-radius:0 5px 5px 0; border-style:solid; font:bold 15px "微软雅黑" !important; color:#ff0000; margin:0; padding:0;} '+
@@ -284,7 +285,7 @@ var videoLinkSet = new Map();
             console.log(context);
             return new Promise(function (resolve, reject) {
                 GM_xmlhttpRequest({method:'GET',
-                                   url:'http://192.168.31.40:8070/'+context,
+                                   url:url+context,
                                    onload : function (response) {
                                        resolve(response.responseText);
                                    }});
